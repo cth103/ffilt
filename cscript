@@ -1,0 +1,19 @@
+def dependencies(target):
+    return (('libdcp', '5682417'))
+
+def configure_options(target):
+    opt = ''
+    if target.platform == 'windows':
+        opt += ' --target-windows'
+    return opt
+
+def build(target, options):
+    target.command('./waf configure --prefix=%s %s' % (target.directory, configure_options(target)))
+    target.command('./waf')
+
+def package_windows(target):
+    return os.path.abspath(glob.glob('build/ffilt.exce' % target.bits)[0])
+
+def package(target, version):
+    if target.platform == 'windows':
+        return package_windows(target)
