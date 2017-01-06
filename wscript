@@ -7,6 +7,12 @@ def configure(conf):
 
     conf.env.TARGET_WINDOWS = conf.options.target_windows
 
+    boost_lib_suffix = ''
+    if conf.env.TARGET_WINDOWS:
+        conf.env.append_value('CXXFLAGS', ['-mconsole'])
+        conf.env.append_value('LINKFLAGS', ['-mconsole'])
+        boost_lib_suffix = '-mt'
+
     conf.env.append_value('CXXFLAGS', ['-D__STDC_CONSTANT_MACROS', '-msse', '-mfpmath=sse', '-ffast-math', '-fno-strict-aliasing', '-Wall', '-Wno-attributes'])
     conf.env.append_value('CXXFLAGS', ['-fpermissive'])
 
@@ -17,12 +23,8 @@ def configure(conf):
     			      int main() { boost::filesystem::copy_file ("a", "b"); }\n
 			      """, msg='Checking for boost filesystem library',
                               libpath='/usr/local/lib',
-                              lib=['boost_filesystem', 'boost_system'],
+                              lib=['boost_filesystem%s' % boost_lib_suffix, 'boost_system%s' % boost_lib_suffix],
                               uselib_store='BOOST_FILESYSTEM')
-
-    if conf.env.TARGET_WINDOWS:
-        conf.env.append_value('CXXFLAGS', ['-mconsole'])
-        conf.env.append_value('LINKFLAGS', ['-mconsole'])
 
 def build(bld):
     obj = bld(features='cxx cxxprogram')
