@@ -72,7 +72,7 @@ main(int argc, char* argv[])
 	}
 
 	set<int64_t> frames;
-	ifstream frames_stream(frames_file->c_str());
+	ifstream frames_stream(frames_file->string().c_str());
 	while (frames_stream.good()) {
 		string line;
 		getline(frames_stream, line);
