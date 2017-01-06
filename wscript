@@ -19,5 +19,5 @@ def configure(conf):
 def build(bld):
     obj = bld(features='cxx cxxprogram')
     obj.uselib = 'BOOST_FILESYSTEM DCP'
-    obj.source = 'couzin-frc.cc'
-    obj.target = 'couzin-frc'
+    obj.source = 'ffilt.cc'
+    obj.target = 'ffilt'
