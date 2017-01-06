@@ -1,4 +1,6 @@
 import os
+import glob
+import shutil
 
 def dependencies(target):
     return (('libdcp', '5682417'),)
@@ -14,7 +16,19 @@ def build(target, options):
     target.command('./waf')
 
 def package_windows(target):
-    return os.path.abspath(glob.glob('build/ffilt.exce' % target.bits)[0])
+    archive = os.path.join(target.directory, 'ffilt')
+    os.makedirs(archive)
+    shutil.copy(os.path.join('build', 'ffilt.exe'), archive)
+    for d in ['libgcc_s_sjlj-1', 'libstdc++-6', 'libboost_filesystem-mt', 'libboost_system-mt', 'libeay32',
+              'libglibmm-2.4-1', 'libxml++-2.6-2', 'libxml2-2', 'libxmlsec1-openssl', 'libxmlsec1', 'zlib1',
+              'libffi-6', 'libglib-2.0-0', 'libgmodule-2.0-0', 'libgobject-2.0-0', 'libsigc-2.0-0',
+              'libintl-8', 'libxslt-1', 'libiconv-2']:
+        shutil.copy(os.path.join(target.windows_prefix, 'bin', '%s.dll' % d), archive)
+    for d in ['dcp-1.0', 'kumu-cth', 'asdcp-cth', 'cxml-0', 'libopenjp2']:
+        shutil.copy(os.path.join(target.directory, 'bin', '%s.dll' % d), archive)
+    output = '%s/ffilt.zip' % target.directory
+    target.command('cd %s && zip -9 -r %s ffilt' % (target.directory, output))
+    return os.path.abspath(output)
 
 def package(target, version):
     if target.platform == 'windows':
