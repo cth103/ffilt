@@ -1,3 +1,5 @@
+import os
+
 def dependencies(target):
     return (('libdcp', '5682417'),)
 
