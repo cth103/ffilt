@@ -1,8 +1,12 @@
 def options(opt):
     opt.load('compiler_cxx')
+    opt.add_option('--target-windows', action='store_true', default=False, help='set up to do a cross-compile to make a Windows package')
 
 def configure(conf):
     conf.load('compiler_cxx')
+
+    conf.env.TARGET_WINDOWS = conf.options.target_windows
+
     conf.env.append_value('CXXFLAGS', ['-D__STDC_CONSTANT_MACROS', '-msse', '-mfpmath=sse', '-ffast-math', '-fno-strict-aliasing', '-Wall', '-Wno-attributes'])
     conf.env.append_value('CXXFLAGS', ['-fpermissive'])
 
@@ -15,6 +19,10 @@ def configure(conf):
                               libpath='/usr/local/lib',
                               lib=['boost_filesystem', 'boost_system'],
                               uselib_store='BOOST_FILESYSTEM')
+
+    if conf.env.TARGET_WINDOWS:
+        conf.env.append_value('CXXFLAGS', ['-mconsole'])
+        conf.env.append_value('LINKFLAGS', ['-mconsole'])
 
 def build(bld):
     obj = bld(features='cxx cxxprogram')
