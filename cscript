@@ -15,8 +15,8 @@ def build(target, options):
     target.command('./waf configure --prefix=%s %s' % (target.directory, configure_options(target)))
     target.command('./waf')
 
-def package_windows(target):
-    archive = os.path.join(target.directory, 'ffilt')
+def package_windows(target, version):
+    archive = os.path.join(target.directory, 'ffilt-%s' % version)
     os.makedirs(archive)
     shutil.copy(os.path.join('build', 'ffilt.exe'), archive)
     for d in ['libgcc_s_sjlj-1', 'libstdc++-6', 'libboost_filesystem-mt', 'libboost_system-mt', 'libeay32',
@@ -26,10 +26,10 @@ def package_windows(target):
         shutil.copy(os.path.join(target.windows_prefix, 'bin', '%s.dll' % d), archive)
     for d in ['dcp-1.0', 'kumu-cth', 'asdcp-cth', 'cxml-0', 'libopenjp2']:
         shutil.copy(os.path.join(target.directory, 'bin', '%s.dll' % d), archive)
-    output = '%s/ffilt.zip' % target.directory
-    target.command('cd %s && zip -9 -r %s ffilt' % (target.directory, output))
+    output = '%s/ffilt-%s.zip' % (target.directory, version)
+    target.command('cd %s && zip -9 -r %s ffilt-%s' % (target.directory, output, version))
     return os.path.abspath(output)
 
 def package(target, version):
     if target.platform == 'windows':
-        return package_windows(target)
+        return package_windows(target, version)
