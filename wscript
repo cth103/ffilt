@@ -1,5 +1,5 @@
 APPNAME = 'ffilt'
-VERSION = '0.0.2devel'
+VERSION = '0.0.3'
 
 def options(opt):
     opt.load('compiler_cxx')
