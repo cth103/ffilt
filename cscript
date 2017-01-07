@@ -27,7 +27,7 @@ def package_windows(target, version):
     for d in ['dcp-1.0', 'kumu-cth', 'asdcp-cth', 'cxml-0', 'libopenjp2']:
         shutil.copy(os.path.join(target.directory, 'bin', '%s.dll' % d), archive)
     output = '%s/ffilt-%s.zip' % (target.directory, version)
-    target.command('cd %s && zip -9 -r %s ffilt-%s' % (target.directory, output, version))
+    target.command('cd %s && zip -9 -r %s ffilt-win-%d-%s' % (target.directory, output, target.bits, version))
     return os.path.abspath(output)
 
 def package(target, version):
