@@ -16,7 +16,7 @@ def build(target, options):
     target.command('./waf')
 
 def package_windows(target, version):
-    name = 'ffilt-win32-%s' % version
+    name = 'ffilt-win%d-%s' % (target.bits, version)
     archive = os.path.join(target.directory, name)
     os.makedirs(archive)
     shutil.copy(os.path.join('build', 'ffilt.exe'), archive)
