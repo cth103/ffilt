@@ -1,3 +1,6 @@
+APPNAME = 'ffilt'
+VERSION = '0.0.1devel'
+
 def options(opt):
     opt.load('compiler_cxx')
     opt.add_option('--target-windows', action='store_true', default=False, help='set up to do a cross-compile to make a Windows package')
